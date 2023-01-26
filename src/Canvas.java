@@ -155,7 +155,7 @@ public class Canvas extends JPanel {
         for (int i = 0; i < agents.length; i++) {
             float[] concentration = {0, 0, 0};
 
-            this.trailMap[agents[i].getX()][agents[i].getY()] = 255f;
+            trailMap[agents[i].getX()][agents[i].getY()] = 255f;
 
             try {
                 concentration = concentrations[i].get();
@@ -164,24 +164,29 @@ public class Canvas extends JPanel {
                 System.exit(1);
             }
 
-            if (concentration[1] < concentration[0] && concentration[1] < concentration[2]) {
-                if (Math.random() < 0.5) {
-                    this.agents[i].rotate(Parameters.TURN_RANGE);
-                } else {
-                    this.agents[i].rotate(-Parameters.TURN_RANGE);
-                }
-
-            } else if (concentration[0] < concentration[2]) {
-                this.agents[i].rotate(Parameters.TURN_RANGE);
-
-            } else if (concentration[2] < concentration[0]) {
-                this.agents[i].rotate(-Parameters.TURN_RANGE);
-            }
+            rotateAgent(concentration, agents[i]);
 
             agents[i].move();
         }
 
         return (int) time.getRunTime();
+    }
+
+
+    private void rotateAgent(float[] concentration, Agent agent) {
+        if (concentration[1] < concentration[0] && concentration[1] < concentration[2]) {
+            if (Math.random() < 0.5) {
+                agent.rotate(Parameters.TURN_RANGE);
+            } else {
+                agent.rotate(-Parameters.TURN_RANGE);
+            }
+
+        } else if (concentration[0] < concentration[2]) {
+            agent.rotate(Parameters.TURN_RANGE);
+
+        } else if (concentration[2] < concentration[0]) {
+            agent.rotate(-Parameters.TURN_RANGE);
+        }
     }
 
 
