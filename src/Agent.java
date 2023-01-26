@@ -2,9 +2,10 @@ import java.awt.*;
 
 public class Agent {
     private final double speed = 1;
+    private final Dimension scope;
     private double x, y;
-    private Dimension scope;
     private Vector2D vector;
+
 
     public Agent(Dimension scope) {
         this.vector = new Vector2D(Math.random() * 360, this.speed);
@@ -14,15 +15,15 @@ public class Agent {
         //this.y = scope.height * Math.random();
         //this.x = ((scope.height  / 2) * Math.random()) + scope.width  / 4;
         //this.y = ((scope.height  / 2) * Math.random()) + scope.height  / 4;
-        this.x = scope.width / 2;
-        this.y = scope.height / 2;
+        this.x = scope.width / 2f;
+        this.y = scope.height / 2f;
         //initSpawn();
     }
 
 
     private void initSpawn() {
         int resolution = 20, rayon = 50;
-        float angle = 360 / resolution;
+        float angle = 360 / (float) resolution;
         int[] x = new int[resolution];
         int[] y = new int[resolution];
         int centerX = scope.width / 2;
@@ -65,11 +66,12 @@ public class Agent {
             return;
         }
 
-        if ((x < 0 && y < 0) || (x < 0 && scope.height <= y) || (scope.width <= x && y < 0) || (scope.width <= x && scope.height <= y)) {
-            this.x = scope.width / 2;
-            this.y = scope.height / 2;
-        }
+        /*if ((x < 0 && y < 0) || (x < 0 && scope.height <= y) || (scope.width <= x && y < 0) || (scope.width <= x && scope.height <= y)) {
+            this.x = scope.width / 2f;
+            this.y = scope.height / 2f;
+        }*/
     }
+
 
     public void move() {
         double newX = this.x + vector.getX(), newY = this.y + vector.getY();
@@ -83,21 +85,26 @@ public class Agent {
         }
     }
 
+
     public void rotate(int alpha) {
         this.vector = this.vector.rotate(alpha);
     }
+
 
     public int getX() {
         return (int) x;
     }
 
+
     public int getY() {
         return (int) y;
     }
 
+
     public double getAngle() {
         return this.vector.getTheta();
     }
+
 
     public Vector2D getVector() {
         return this.vector;

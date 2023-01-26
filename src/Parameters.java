@@ -9,7 +9,7 @@ public class Parameters {
     //Application parameters
     public static final int NUMB_OF_THREADS = 12;
     public static final int FRAME_RATE = 60;
-    public static final Dimension FRAME_SIZE = new Dimension(400, 300);
+    public static final Dimension FRAME_SIZE = new Dimension(400, 400);
 
 
     //Agent parameters

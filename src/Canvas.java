@@ -55,7 +55,7 @@ public class Canvas extends JPanel {
             System.out.println("Error");
         }
 
-        Time repaintTime = new Time();
+        //Time repaintTime = new Time();
 
         for (int i = 0; i < screen.getWidth(); i++) {
             for (int j = 0; j < screen.getHeight(); j++) {
