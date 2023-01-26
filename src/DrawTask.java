@@ -1,8 +1,8 @@
 import java.util.TimerTask;
 
 public class DrawTask extends TimerTask {
-    private Canvas canvas;
-    private Time time;
+    private final Canvas canvas;
+    private final Time time;
     private int loopCount = 0;
     private double avgFrameRate = 0d;
 
