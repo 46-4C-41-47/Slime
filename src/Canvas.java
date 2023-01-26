@@ -41,7 +41,7 @@ public class Canvas extends JPanel {
         Time totalTime = new Time();
         totalTime.start();
         Color c;
-        Float[][] prevTrailMap = Utilities.copyArray(Float.class, trailMap);
+        Float[][] prevTrailMap = Main.copyArray(Float.class, trailMap);
         int RGB;
 
         Future<Integer> finishingState = EXECUTOR.submit(this::processTrails);
