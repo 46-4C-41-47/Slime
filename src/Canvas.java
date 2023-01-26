@@ -1,5 +1,4 @@
-import javax.swing.JPanel;
-
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -11,7 +10,7 @@ public class Canvas extends JPanel {
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(Parameters.NUMB_OF_THREADS);
     private final BufferedImage screen;
     private final Dimension size;
-    private Double[][] trailMap;
+    private Float[][] trailMap;
     private Agent[] agents;
 
 
@@ -30,11 +29,11 @@ public class Canvas extends JPanel {
 
     private void init() {
         agents = new Agent[Parameters.POPULATION];
-        trailMap = new Double[size.width][size.height];
+        trailMap = new Float[size.width][size.height];
 
         for (int i = 0; i < agents.length; i++) agents[i] = new Agent(size);
 
-        for (Double[] doubles : trailMap) Arrays.fill(doubles, 0d);
+        for (Float[] floats : trailMap) Arrays.fill(floats, 0f);
     }
 
 
@@ -42,7 +41,7 @@ public class Canvas extends JPanel {
         Time totalTime = new Time();
         totalTime.start();
         Color c;
-        Double[][] prevTrailMap = Utilities.copyArray(Double.class, trailMap);
+        Float[][] prevTrailMap = Utilities.copyArray(Float.class, trailMap);
         int RGB;
 
         Future<Integer> finishingState = EXECUTOR.submit(this::processTrails);
@@ -61,7 +60,7 @@ public class Canvas extends JPanel {
         for (int i = 0; i < screen.getWidth(); i++) {
             for (int j = 0; j < screen.getHeight(); j++) {
                 if (trailMap[i][j].doubleValue() != prevTrailMap[i][j].doubleValue()) {
-                    RGB = (int) this.trailMap[i][j].doubleValue();
+                    RGB = Math.round(this.trailMap[i][j]);
                     c = new Color(RGB, RGB, RGB);
                     screen.setRGB(i, j, c.getRGB());
                 }
@@ -76,7 +75,7 @@ public class Canvas extends JPanel {
     private int processTrails() {
         Time time = new Time();
         time.start();
-        double sum, blurValue, temp;
+        float sum, blurValue, temp;
         int x, y;
 
         for (int i = 0; i < this.screen.getWidth(); i++) {
@@ -102,7 +101,7 @@ public class Canvas extends JPanel {
                 if (0 < temp) {
                     this.trailMap[i][j] = temp;
                 } else {
-                    this.trailMap[i][j] = 0d;
+                    this.trailMap[i][j] = 0f;
                 }
             }
         }
@@ -112,12 +111,12 @@ public class Canvas extends JPanel {
     }
 
 
-    private double sense(Agent agent, double sensorAngleOffset) {
+    private float sense(Agent agent, double sensorAngleOffset) {
         double sensorAngle = agent.getAngle() + sensorAngleOffset;
         Vector2D sensorVector = new Vector2D(sensorAngle, Parameters.VIEW_DISTANCE);
-        double sensorX = agent.getX() + sensorVector.getX();
-        double sensorY = agent.getY() + sensorVector.getY();
-        double sum = 0d;
+        float sensorX = (float) (agent.getX() + sensorVector.getX());
+        float sensorY = (float) (agent.getY() + sensorVector.getY());
+        float sum = 0f;
 
         for (int i = -Parameters.SENSOR_SIZE; i < Parameters.SENSOR_SIZE; i++) {
             for (int j = -Parameters.SENSOR_SIZE; j < Parameters.SENSOR_SIZE; j++) {
@@ -134,8 +133,8 @@ public class Canvas extends JPanel {
     }
 
 
-    private double[] getConcentration(Agent agent) {
-        return new double[]{
+    private float[] getConcentration(Agent agent) {
+        return new float[]{
                 sense(agent, -Parameters.SENSOR_ANGLE),
                 sense(agent, 0),
                 sense(agent, Parameters.SENSOR_ANGLE)
@@ -146,7 +145,7 @@ public class Canvas extends JPanel {
     private int moveAgent() {
         Time time = new Time();
         time.start();
-        Future<double[]>[] concentrations = new Future[this.agents.length];
+        Future<float[]>[] concentrations = new Future[this.agents.length];
 
         for (int i = 0; i < agents.length; i++) {
             final int tempIndex = i;
@@ -154,9 +153,9 @@ public class Canvas extends JPanel {
         }
 
         for (int i = 0; i < agents.length; i++) {
-            double[] concentration = {0, 0, 0};
+            float[] concentration = {0, 0, 0};
 
-            this.trailMap[agents[i].getX()][agents[i].getY()] = 255d;
+            this.trailMap[agents[i].getX()][agents[i].getY()] = 255f;
 
             try {
                 concentration = concentrations[i].get();

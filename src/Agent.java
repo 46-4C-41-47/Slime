@@ -8,16 +8,40 @@ public class Agent {
 
     public Agent(Dimension scope) {
         this.vector = new Vector2D(Math.random() * 360, this.speed);
+        this.scope = scope;
         //spawning coordinates
-        this.x = scope.width * Math.random();
-        this.y = scope.height * Math.random();
+        //this.x = scope.width * Math.random();
+        //this.y = scope.height * Math.random();
         //this.x = ((scope.height  / 2) * Math.random()) + scope.width  / 4;
         //this.y = ((scope.height  / 2) * Math.random()) + scope.height  / 4;
-        //this.x = scope.width / 2;
-        //this.y = scope.height / 2;
-
-        this.scope = scope;
+        this.x = scope.width / 2;
+        this.y = scope.height / 2;
+        //initSpawn();
     }
+
+
+    private void initSpawn() {
+        int resolution = 20, rayon = 50;
+        float angle = 360 / resolution;
+        int[] x = new int[resolution];
+        int[] y = new int[resolution];
+        int centerX = scope.width / 2;
+        int centerY = scope.height / 2;
+
+        for (int i = 0; i < resolution; i++) {
+            x[i] = (int) (Math.cos(Math.toDegrees(angle) * i) * rayon) + centerX;
+            y[i] = (int) (Math.sin(Math.toDegrees(angle) * i) * rayon) + centerY;
+        }
+
+        Polygon circle = new Polygon(x, y, resolution);
+
+        do {
+            this.x = scope.width * Math.random();
+            this.y = scope.height * Math.random();
+
+        } while (!circle.contains(this.x, this.y));
+    }
+
 
     private void outOfBounds(double x, double y) {
         if (x < 0) {

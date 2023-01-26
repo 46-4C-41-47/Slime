@@ -20,7 +20,7 @@ public class DrawTask extends TimerTask {
         canvas.paintComponent(canvas.getGraphics());
 
         if (loopCount == 60 * 10) {
-            System.out.println((int) (avgFrameRate / (60 * 10)));
+            //System.out.println((int) (avgFrameRate / (60 * 10)));
             loopCount = -1;
             avgFrameRate = 0;
             //System.exit(0);

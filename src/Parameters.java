@@ -2,8 +2,8 @@ import java.awt.*;
 
 public class Parameters {
     //Canvas parameters
-    public static final double EVAPORATION_WEIGHT = 0.8;
-    public static final double BLUR_WEIGHT = 0.08;
+    public static final float EVAPORATION_WEIGHT = 0.8f;
+    public static final float BLUR_WEIGHT = 0.08f;
 
 
     //Application parameters
