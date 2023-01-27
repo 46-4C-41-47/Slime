@@ -13,7 +13,7 @@ public class Parameters {
 
 
     //Agent parameters
-    public static final int POPULATION = 1000;
+    public static final int POPULATION = 2000;
     public static final int SENSOR_ANGLE = 45;
     public static final int VIEW_DISTANCE = 9;
     public static final int TURN_RANGE = 22;

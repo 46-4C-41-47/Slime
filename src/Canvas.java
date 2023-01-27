@@ -30,12 +30,29 @@ public class Canvas extends JPanel {
     private void init() {
         agents = new Agent[Parameters.POPULATION];
         trailMap = new Float[size.width][size.height];
+        Polygon spawningArea = createSpawningArea();
 
-        for (int i = 0; i < agents.length; i++) agents[i] = new Agent(size);
+        for (int i = 0; i < agents.length; i++) agents[i] = new Agent(size, spawningArea);
 
         for (Float[] floats : trailMap) Arrays.fill(floats, 0f);
     }
 
+
+    private Polygon createSpawningArea() {
+        int resolution = 20, rayon = screen.getHeight() / 4;
+        float angle = 360 / (float) resolution;
+        int[] x = new int[resolution];
+        int[] y = new int[resolution];
+        int centerX = screen.getWidth() / 2;
+        int centerY = screen.getHeight() / 2;
+
+        for (int i = 0; i < resolution; i++) {
+            x[i] = (int) (Math.cos(Math.toRadians(angle) * i) * rayon) + centerX;
+            y[i] = (int) (Math.sin(Math.toRadians(angle) * i) * rayon) + centerY;
+        }
+
+        return new Polygon(x, y, resolution);
+    }
 
     public void draw() {
         Time totalTime = new Time();

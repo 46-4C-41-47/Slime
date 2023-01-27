@@ -8,39 +8,27 @@ public class Agent {
 
 
     public Agent(Dimension scope) {
-        this.vector = new Vector2D(Math.random() * 360, this.speed);
         this.scope = scope;
-        //spawning coordinates
-        //this.x = scope.width * Math.random();
-        //this.y = scope.height * Math.random();
-        //this.x = ((scope.height  / 2) * Math.random()) + scope.width  / 4;
-        //this.y = ((scope.height  / 2) * Math.random()) + scope.height  / 4;
-        //this.x = scope.width / 2f;
-        //this.y = scope.height / 2f;
-        initSpawn();
+        vector = new Vector2D(Math.random() * 360, speed);
+
+        x = scope.width / 2f;
+        y = scope.height / 2f;
     }
 
 
-    private void initSpawn() {
-        int resolution = 20, rayon = scope.height / 2;
-        float angle = 360 / (float) resolution;
-        int[] x = new int[resolution];
-        int[] y = new int[resolution];
-        int centerX = scope.width / 2;
-        int centerY = scope.height / 2;
+    public Agent(Dimension scope, Polygon spawningArea) {
+        this.scope = scope;
+        vector = new Vector2D(Math.random() * 360, speed);
+        spawn(spawningArea);
+    }
 
-        for (int i = 0; i < resolution; i++) {
-            x[i] = (int) (Math.cos(Math.toRadians(angle) * i) * rayon) + centerX;
-            y[i] = (int) (Math.sin(Math.toRadians(angle) * i) * rayon) + centerY;
-        }
 
-        Polygon circle = new Polygon(x, y, resolution);
-
+    private void spawn(Polygon spawningArea) {
         do {
             this.x = scope.width * Math.random();
             this.y = scope.height * Math.random();
 
-        } while (!circle.contains(this.x, this.y));
+        } while (!spawningArea.contains(this.x, this.y));
     }
 
 
