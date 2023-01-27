@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+
 public class Canvas extends JPanel {
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(Parameters.NUMB_OF_THREADS);
     private final BufferedImage screen;
@@ -54,6 +55,7 @@ public class Canvas extends JPanel {
         return new Polygon(x, y, resolution);
     }
 
+
     public void draw() {
         Time totalTime = new Time();
         totalTime.start();
@@ -92,7 +94,7 @@ public class Canvas extends JPanel {
     private int processTrails() {
         Time time = new Time();
         time.start();
-        float sum, blurValue, temp;
+        float sum, aroundConcentration, temp;
         int x, y;
 
         for (int i = 0; i < this.screen.getWidth(); i++) {
@@ -110,8 +112,8 @@ public class Canvas extends JPanel {
                     }
                 }
 
-                blurValue = sum / 9;
-                temp = this.trailMap[i][j] - (this.trailMap[i][j] - blurValue) * Parameters.BLUR_WEIGHT;
+                aroundConcentration = sum / 9;
+                temp = this.trailMap[i][j] - (this.trailMap[i][j] - aroundConcentration) * Parameters.BLUR_WEIGHT;
 
                 temp -= Parameters.EVAPORATION_WEIGHT;
 
