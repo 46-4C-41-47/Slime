@@ -15,14 +15,14 @@ public class Agent {
         //this.y = scope.height * Math.random();
         //this.x = ((scope.height  / 2) * Math.random()) + scope.width  / 4;
         //this.y = ((scope.height  / 2) * Math.random()) + scope.height  / 4;
-        this.x = scope.width / 2f;
-        this.y = scope.height / 2f;
-        //initSpawn();
+        //this.x = scope.width / 2f;
+        //this.y = scope.height / 2f;
+        initSpawn();
     }
 
 
     private void initSpawn() {
-        int resolution = 20, rayon = 50;
+        int resolution = 20, rayon = scope.height / 2;
         float angle = 360 / (float) resolution;
         int[] x = new int[resolution];
         int[] y = new int[resolution];
@@ -30,8 +30,8 @@ public class Agent {
         int centerY = scope.height / 2;
 
         for (int i = 0; i < resolution; i++) {
-            x[i] = (int) (Math.cos(Math.toDegrees(angle) * i) * rayon) + centerX;
-            y[i] = (int) (Math.sin(Math.toDegrees(angle) * i) * rayon) + centerY;
+            x[i] = (int) (Math.cos(Math.toRadians(angle) * i) * rayon) + centerX;
+            y[i] = (int) (Math.sin(Math.toRadians(angle) * i) * rayon) + centerY;
         }
 
         Polygon circle = new Polygon(x, y, resolution);
