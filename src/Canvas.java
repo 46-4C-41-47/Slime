@@ -8,15 +8,20 @@ import java.util.concurrent.Future;
 
 
 public class Canvas extends JPanel {
-    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(Parameters.NUMB_OF_THREADS);
+    private final ExecutorService executor;
+    private final CanvasParameters canvasParameters;
+    private final AgentParameters agentParameters;
     private final BufferedImage screen;
     private final Dimension size;
     private Float[][] trailMap;
     private Agent[] agents;
 
 
-    public Canvas(Dimension d) {
+    public Canvas(Dimension d, ApplicationParameters applicationParameters, AgentParameters agentParameters, CanvasParameters canvasParameters) {
         super();
+        this.agentParameters = agentParameters;
+        this.canvasParameters = canvasParameters;
+        executor = Executors.newFixedThreadPool(applicationParameters.numbOfThreads());
         size = new Dimension(d.width - 16, d.height - 39);
         this.screen = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
 
@@ -29,7 +34,7 @@ public class Canvas extends JPanel {
 
 
     private void init() {
-        agents = new Agent[Parameters.POPULATION];
+        agents = new Agent[agentParameters.population()];
         trailMap = new Float[size.width][size.height];
         Polygon spawningArea = createSpawningArea();
 
@@ -63,7 +68,7 @@ public class Canvas extends JPanel {
         Float[][] prevTrailMap = Main.copyArray(Float.class, trailMap);
         int RGB;
 
-        Future<Integer> finishingState = EXECUTOR.submit(this::processTrails);
+        Future<Integer> finishingState = executor.submit(this::processTrails);
 
         //System.out.print("Move agent : " + moveAgent() + " ms, ");
         moveAgent();
@@ -113,9 +118,9 @@ public class Canvas extends JPanel {
                 }
 
                 aroundConcentration = sum / 9;
-                temp = this.trailMap[i][j] - (this.trailMap[i][j] - aroundConcentration) * Parameters.BLUR_WEIGHT;
+                temp = this.trailMap[i][j] - (this.trailMap[i][j] - aroundConcentration) * canvasParameters.blurWeight();
 
-                temp -= Parameters.EVAPORATION_WEIGHT;
+                temp -= canvasParameters.evaporationWeight();
 
                 if (0 < temp) {
                     this.trailMap[i][j] = temp;
@@ -132,13 +137,13 @@ public class Canvas extends JPanel {
 
     private float sense(Agent agent, double sensorAngleOffset) {
         double sensorAngle = agent.getAngle() + sensorAngleOffset;
-        Vector2D sensorVector = new Vector2D(sensorAngle, Parameters.VIEW_DISTANCE);
+        Vector2D sensorVector = new Vector2D(sensorAngle, agentParameters.viewDistance());
         float sensorX = (float) (agent.getX() + sensorVector.getX());
         float sensorY = (float) (agent.getY() + sensorVector.getY());
         float sum = 0f;
 
-        for (int i = -Parameters.SENSOR_SIZE; i < Parameters.SENSOR_SIZE; i++) {
-            for (int j = -Parameters.SENSOR_SIZE; j < Parameters.SENSOR_SIZE; j++) {
+        for (int i = -agentParameters.sensorSize(); i < agentParameters.sensorSize(); i++) {
+            for (int j = -agentParameters.sensorSize(); j < agentParameters.sensorSize(); j++) {
                 sensorX += i;
                 sensorY += j;
 
@@ -154,9 +159,9 @@ public class Canvas extends JPanel {
 
     private float[] getConcentration(Agent agent) {
         return new float[]{
-                sense(agent, -Parameters.SENSOR_ANGLE),
+                sense(agent, -agentParameters.sensorAngle()),
                 sense(agent, 0),
-                sense(agent, Parameters.SENSOR_ANGLE)
+                sense(agent, agentParameters.sensorAngle())
         };
     }
 
@@ -168,7 +173,7 @@ public class Canvas extends JPanel {
 
         for (int i = 0; i < agents.length; i++) {
             final int tempIndex = i;
-            concentrations[i] = EXECUTOR.submit(() -> getConcentration(agents[tempIndex]));
+            concentrations[i] = executor.submit(() -> getConcentration(agents[tempIndex]));
         }
 
         for (int i = 0; i < agents.length; i++) {
@@ -195,16 +200,16 @@ public class Canvas extends JPanel {
     private void rotateAgent(float[] concentration, Agent agent) {
         if (concentration[1] < concentration[0] && concentration[1] < concentration[2]) {
             if (Math.random() < 0.5) {
-                agent.rotate(Parameters.TURN_RANGE);
+                agent.rotate(agentParameters.turnRange());
             } else {
-                agent.rotate(-Parameters.TURN_RANGE);
+                agent.rotate(-agentParameters.turnRange());
             }
 
         } else if (concentration[0] < concentration[2]) {
-            agent.rotate(Parameters.TURN_RANGE);
+            agent.rotate(agentParameters.turnRange());
 
         } else if (concentration[2] < concentration[0]) {
-            agent.rotate(-Parameters.TURN_RANGE);
+            agent.rotate(-agentParameters.turnRange());
         }
     }
 

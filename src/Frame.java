@@ -1,21 +1,20 @@
-import javax.swing.JFrame;
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 
 public class Frame extends JFrame {
     private Dimension size;
     private Canvas canvas;
 
-    public Frame() {
+    public Frame(ApplicationParameters application, AgentParameters agent, CanvasParameters canvasParameters) {
         super();
-        this.size = new Dimension(Parameters.FRAME_SIZE);
-        this.canvas = new Canvas(this.size);
+        this.size = new Dimension(application.frameSize());
+        this.canvas = new Canvas(this.size, application, agent, canvasParameters);
 
         this.setSize(this.size);
-        this.setResizable(false);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.add(canvas);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.setVisible(true);
     }
 
