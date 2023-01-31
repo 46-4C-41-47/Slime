@@ -2,15 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Frame extends JFrame {
-    private Dimension size;
-    private Canvas canvas;
+    private final Canvas canvas;
+
 
     public Frame(ApplicationParameters application, AgentParameters agent, CanvasParameters canvasParameters) {
         super();
-        this.size = new Dimension(application.frameSize());
-        this.canvas = new Canvas(this.size, application, agent, canvasParameters);
+        Dimension size = new Dimension(application.frameSize());
+        this.canvas = new Canvas(size, application, agent, canvasParameters);
 
-        this.setSize(this.size);
+        this.setSize(size);
         this.add(canvas);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);

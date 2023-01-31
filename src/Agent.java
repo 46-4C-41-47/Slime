@@ -92,9 +92,4 @@ public class Agent {
     public double getAngle() {
         return this.vector.getTheta();
     }
-
-
-    public Vector2D getVector() {
-        return this.vector;
-    }
 }

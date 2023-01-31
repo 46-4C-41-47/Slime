@@ -3,8 +3,8 @@ import java.util.TimerTask;
 public class DrawTask extends TimerTask {
     private final Canvas canvas;
     private final Time time;
-    private int loopCount = 0;
-    private double avgFrameRate = 0d;
+    //private int loopCount = 0;
+    //private double avgFrameRate = 0d;
 
     public DrawTask(Canvas c) {
         canvas = c;
@@ -19,7 +19,7 @@ public class DrawTask extends TimerTask {
         canvas.draw();
         canvas.paintComponent(canvas.getGraphics());
 
-        if (loopCount == 60 * 10) {
+        /*if (loopCount == 60 * 10) {
             //System.out.println((int) (avgFrameRate / (60 * 10)));
             loopCount = -1;
             avgFrameRate = 0;
@@ -27,6 +27,6 @@ public class DrawTask extends TimerTask {
         }
         avgFrameRate += time.getFrameRate();
 
-        loopCount++;
+        loopCount++;*/
     }
 }

@@ -166,7 +166,7 @@ public class Canvas extends JPanel {
     }
 
 
-    private int moveAgent() {
+    private void moveAgent() {
         Time time = new Time();
         time.start();
         Future<float[]>[] concentrations = new Future[this.agents.length];
@@ -192,8 +192,7 @@ public class Canvas extends JPanel {
 
             agents[i].move();
         }
-
-        return (int) time.getRunTime();
+        //return (int) time.getRunTime();
     }
 
 
