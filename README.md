@@ -1,10 +1,10 @@
-Je suis pas convaicu du fait que ce projet ait une utilité quelconque
-Mais ca fait des trucs sympa à regarder donc je le partage
+Je suis pas convaicu du fait que ce projet ait une utilité quelconque.
+Mais ca fait des trucs sympa à regarder donc je le partage.
 
-L'idée de base de ce projet vient de [cette vidéo](https://www.youtube.com/watch?v=X-iSQQgOd1A), lui a d'allieurs été plus malin parcequ'il a fait ca avec des compute shaders
+L'idée de base de ce projet vient de [cette vidéo](https://www.youtube.com/watch?v=X-iSQQgOd1A), lui a d'ailleurs été plus malin parcequ'il a fait ca avec des compute shaders
 ce qui lui permet de simuler des populations bien plus grandes. Parceque même si j'ai fait tourner ça en multithreading à partir 25 000 particules ca commence à devenir restreint niveau framerate.
 
-Une bonne idée de V2 serait de refaire ce projet avec OpenGL et C++
+Une bonne idée de V2 serait de refaire ce projet avec OpenGL et C++.
 
 
 
